@@ -28,6 +28,9 @@ namespace TestForJPsProject
                 _selectedListItem = value;
                 
                 RaisePropertyChangedEvent(nameof(SelectedListItem));
+                
+                ClickOnListItemCommand.RaiseCanExecuteChanged();
+                ConfirmSelectionCommand.RaiseCanExecuteChanged();
             } 
         }
 
@@ -86,7 +89,9 @@ namespace TestForJPsProject
                 ClickOnListItem,
                 (x) => SelectedListItem != null);
 
-            ConfirmSelectionCommand = new DelegateCommand(PrintSelectedItem);
+            ConfirmSelectionCommand = new DelegateCommand(
+                PrintSelectedItem,
+                (x) => SelectedListItem != null);
         }
 
         protected void RaisePropertyChangedEvent(string propertyName)
@@ -95,7 +100,7 @@ namespace TestForJPsProject
                 this, 
                 new PropertyChangedEventArgs(propertyName));
         }
-
+        
         private void PrintSelectedItem()
         {
             if(SelectedListItem == null)
