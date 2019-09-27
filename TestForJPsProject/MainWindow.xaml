@@ -22,10 +22,11 @@
             <Button Content="Confirm selection!" Command="{Binding ConfirmSelectionCommand}"/>
         </DockPanel>
 
-        <DockPanel Grid.Row="0" Grid.Column="0">
+        <DockPanel Background="Coral" Grid.Row="0" Grid.Column="0">
             <ListBox ItemsSource="{Binding MyList}" 
                      SelectedItem="{Binding SelectedListItem}" 
-                     HorizontalContentAlignment="Stretch">
+                     HorizontalContentAlignment="Stretch"
+                     VerticalAlignment="Top">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseUp">
                         <i:InvokeCommandAction Command="{Binding ClickOnListItemCommand}"

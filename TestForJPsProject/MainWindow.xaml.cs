@@ -98,6 +98,13 @@ namespace TestForJPsProject
 
         private void PrintSelectedItem()
         {
+            if(SelectedListItem == null)
+            {
+                MessageBox.Show("Nothing selected, so nothing to show here!");
+
+                return;
+            }
+            
             LabelText = 
                 $"The currently selected list item is {SelectedListItem.MyName}!";
         }
@@ -119,8 +126,6 @@ namespace TestForJPsProject
                 new ObservableCollection<MyObject>(_checkedListItems);
 
             RaisePropertyChangedEvent(nameof(CheckedListItems));
-
-            SelectedListItem = null;
         }
     }
 
