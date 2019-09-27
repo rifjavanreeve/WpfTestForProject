@@ -19,15 +19,22 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+            <!--Button gets disabled when CanExecuteCommand evaluates to false (see VM)-->
             <Button Content="Confirm selection!" Command="{Binding ConfirmSelectionCommand}"/>
         </DockPanel>
 
         <DockPanel Background="Coral" Grid.Row="0" Grid.Column="0">
-            <ListBox ItemsSource="{Binding MyList}" 
+            <!--Object bound to the whole ListBox is the ObservableCollection<MyObject> MyList. 
+            The SelectedItem is bound to the VM property SelectedListItem of type MyObject.
+                Whenever a listbox item is selected, it is set as the VM property SelectedListItem.-->
+                <ListBox ItemsSource="{Binding MyList}" 
                      SelectedItem="{Binding SelectedListItem}" 
                      HorizontalContentAlignment="Stretch"
                      VerticalAlignment="Top">
-                <i:Interaction.Triggers>
+                <!--Using the EventTrigger, we bind a command to the release of the left mouse click on 
+                    a list box item. The CommandParameter is bound to ".", referring to "this",
+                    which in the current context of our ItemsSource is the SelectedItem-->
+                    <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseUp">
                         <i:InvokeCommandAction Command="{Binding ClickOnListItemCommand}"
                                                CommandParameter="{Binding .}"/>
@@ -35,6 +42,10 @@
                 </i:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
+                        <!--The IsChecked status is bound to the selected MyObject's property IsSelected.
+                        By setting IsHitTestVisible to false we control the IsChecked status and get/set
+                        the SelectedItem's IsSelected property by our defined EventTrigger & the 
+                        invoked command.-->
                         <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
                                   IsHitTestVisible="False"
                                   Content="{Binding MyName}"/>

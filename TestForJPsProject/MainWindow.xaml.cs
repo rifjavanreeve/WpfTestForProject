@@ -17,6 +17,7 @@ namespace TestForJPsProject
         private ObservableCollection<MyObject> _checkedListItems =
             new ObservableCollection<MyObject>();
         
+        //the property containing the list box item selected by clicking on it
         public MyObject SelectedListItem 
         {
             get
@@ -29,6 +30,9 @@ namespace TestForJPsProject
                 
                 RaisePropertyChangedEvent(nameof(SelectedListItem));
                 
+                //since our evaluation of CanExecute is bound to this property in both commands,
+                //we call their RaiseCanExecuteChanged methods to make them & the GUI aware of
+                //the changes
                 ClickOnListItemCommand.RaiseCanExecuteChanged();
                 ConfirmSelectionCommand.RaiseCanExecuteChanged();
             } 
@@ -71,7 +75,7 @@ namespace TestForJPsProject
         {
             InitializeComponent();
 
-            this.DataContext = this;
+            DataContext = this;
 
             LabelText = "There's nothing selected yet!";
             
@@ -82,9 +86,11 @@ namespace TestForJPsProject
                 new MyObject() { MyName = "String 3" }
             };
 
+            //at start, we filter MyList for any items with property IsSelected == true
             CheckedListItems = new ObservableCollection<MyObject>(
                 MyList.Where(item => item.IsSelected));
 
+            //setting the bound commands with the command action and the canExecute predicate
             ClickOnListItemCommand = new DelegateCommand(
                 ClickOnListItem,
                 (x) => SelectedListItem != null);
@@ -116,6 +122,10 @@ namespace TestForJPsProject
 
         private void ClickOnListItem()
         {
+            //when clicking on list box item, its IsSelected property is toggled
+            //and it is either added or removed from the list of checked list items
+            //note: we could also get same result using the property getter and 
+            //have the setter of SelectedListItem notify ClickOnListItem as well
             SelectedListItem.IsSelected = !SelectedListItem.IsSelected;
 
             if (SelectedListItem.IsSelected)

@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 namespace TestForJPsProject
 {
+    //using the same .cs file for the DelegateCommand of a generic type and the typeless DelegateCommand
     public class DelegateCommand<T> : ICommand
     {
         private readonly Predicate<T> _canExecute;
@@ -36,13 +37,15 @@ namespace TestForJPsProject
                 : (T)Convert.ChangeType(parameter, typeof(T)));
         }
 
+        //we can use the RaiseCanExecuteChanged method to invoke the CanExecuteChanged event
+        //which changes the CanExecute state of a command
         public event EventHandler CanExecuteChanged;
-        public void OnCanExecuteChanged()
+        public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
-
+    //the DelegateCommand which is not of a generic type
     public class DelegateCommand : ICommand
     {
         private readonly Predicate<object> _canExecute;
@@ -50,14 +53,18 @@ namespace TestForJPsProject
 
         public event EventHandler CanExecuteChanged;
 
+        //added a constructor with an action without a generic type as parameter
         public DelegateCommand(Action execute)
             :this(execute, null)
         {
         }
 
+        //overloaded constructor with action w/o generic type to accept a canExecute predicate
         public DelegateCommand(Action execute, 
             Predicate<object> canExecute)
         {
+            //setting the private field _execute of type Action<object>
+            //with the execute parameter of type Action w/o generic type
             _execute = (o) => execute();
             _canExecute = canExecute;
         }
