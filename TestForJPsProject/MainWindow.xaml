@@ -56,12 +56,14 @@
 
         <Label Grid.Row="1" Grid.Column="0" Content="{Binding LabelText}"/>
 
-        <StackPanel Grid.Row="1" Grid.Column="1">
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Label Content="Following ListItems are currently checked:"/>
-            <DataGrid ItemsSource="{Binding CheckedListItems}"
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <DataGrid ItemsSource="{Binding CheckedListItems}"
                       IsEnabled="False">
-                
-            </DataGrid>
+
+                </DataGrid>
+            </ScrollViewer>
         </StackPanel>
     </Grid>
 </Window>
